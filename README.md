@@ -37,7 +37,7 @@ O Postgres roda em Docker, na porta **5433** (para não conflitar com outro Post
 npm run db:up      # sobe o banco
 npm run db:down    # derruba o banco (os dados ficam no volume)
 npm run db:migrate # aplica as migrations
-npm run db:seed    # cria os moradores de exemplo
+npm run db:seed    # cria o administrador inicial
 npm run db:studio  # abre o Prisma Studio para ver os dados
 ```
 
@@ -51,4 +51,4 @@ npm run db:migrate
 npm run db:seed
 ```
 
-O seed cria os 9 moradores dos protótipos (Rafael é o administrador; Otávio está inativo). A senha de todos é a definida em `SEED_SENHA` (padrão: `coliseu123`).
+Antes do `db:seed`, preencha `ADMIN_NOME`, `ADMIN_USUARIO`, `ADMIN_SENHA` (e opcionalmente `ADMIN_EMAIL`) no `apps/api/.env`. O seed cria só esse administrador; os demais moradores são cadastrados por ele pelo sistema.

@@ -3,37 +3,42 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '../src/lib/prisma';
 import { Perfil } from '../src/generated/prisma/enums';
 
-const SENHA_PADRAO = process.env.SEED_SENHA ?? 'coliseu123';
-
-const moradores = [
-  { nome: 'Rafael', usuario: 'rafael', perfil: Perfil.ADMIN, ativo: true },
-  { nome: 'Bruno', usuario: 'bruno', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Thiago', usuario: 'thiago', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Lucas', usuario: 'lucas', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Davi', usuario: 'davi', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Pedro', usuario: 'pedro', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Caio', usuario: 'caio', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Vitor', usuario: 'vitor', perfil: Perfil.MORADOR, ativo: true },
-  { nome: 'Otávio', usuario: 'otavio', perfil: Perfil.MORADOR, ativo: false },
-];
+function obrigatoria(nome: string): string {
+  const valor = process.env[nome]?.trim();
+  if (!valor) {
+    throw new Error(`Defina ${nome} no apps/api/.env para criar o administrador.`);
+  }
+  return valor;
+}
 
 async function main() {
-  const senhaHash = await bcrypt.hash(SENHA_PADRAO, 10);
+  const nome = obrigatoria('ADMIN_NOME');
+  const usuario = obrigatoria('ADMIN_USUARIO').toLowerCase();
+  const senha = obrigatoria('ADMIN_SENHA');
+  const email = process.env.ADMIN_EMAIL?.trim() || null;
 
-  for (const morador of moradores) {
-    await prisma.user.upsert({
-      where: { usuario: morador.usuario },
-      update: { nome: morador.nome, perfil: morador.perfil, ativo: morador.ativo },
-      create: { ...morador, senhaHash },
-    });
+  const existente = await prisma.user.findUnique({ where: { usuario } });
+  if (existente) {
+    console.log(`Administrador "${usuario}" já existe. Nada a fazer.`);
+    return;
   }
 
-  console.log(`Seed concluído: ${moradores.length} moradores (senha padrão: ${SENHA_PADRAO}).`);
+  await prisma.user.create({
+    data: {
+      nome,
+      usuario,
+      email,
+      senhaHash: await bcrypt.hash(senha, 10),
+      perfil: Perfil.ADMIN,
+    },
+  });
+
+  console.log(`Administrador "${usuario}" criado.`);
 }
 
 main()
   .catch((erro) => {
-    console.error(erro);
-    process.exit(1);
+    console.error(erro instanceof Error ? erro.message : erro);
+    process.exitCode = 1;
   })
   .finally(() => prisma.$disconnect());
