@@ -30,6 +30,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:up": "docker compose up -d --wait db",
-    "db:down": "docker compose down"
+    "db:down": "docker compose down",
+    "db:migrate": "npm run db:migrate -w @casacoliseu/api",
+    "db:seed": "npm run db:seed -w @casacoliseu/api",
+    "db:studio": "npm run db:studio -w @casacoliseu/api"
   }
 }
