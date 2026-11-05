@@ -23,8 +23,8 @@ npm run dev      # sobe web (http://localhost:5173) e api (http://localhost:3333
 
 Outros scripts:
 
-| Script            | O que faz                         |
-| ----------------- | --------------------------------- |
-| `npm run build`   | Gera o build de todos os pacotes  |
-| `npm run lint`    | Verifica o código com ESLint      |
-| `npm run format`  | Formata o código com Prettier     |
+| Script           | O que faz                        |
+| ---------------- | -------------------------------- |
+| `npm run build`  | Gera o build de todos os pacotes |
+| `npm run lint`   | Verifica o código com ESLint     |
+| `npm run format` | Formata o código com Prettier    |
