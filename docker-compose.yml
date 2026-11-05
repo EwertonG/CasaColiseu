@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: casacoliseu-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: coliseu
+      POSTGRES_PASSWORD: coliseu
+      POSTGRES_DB: casacoliseu
+    ports:
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U coliseu -d casacoliseu']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

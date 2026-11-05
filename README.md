@@ -28,3 +28,12 @@ Outros scripts:
 | `npm run build`  | Gera o build de todos os pacotes |
 | `npm run lint`   | Verifica o código com ESLint     |
 | `npm run format` | Formata o código com Prettier    |
+
+## Banco de dados
+
+O Postgres roda em Docker, na porta **5433** (para não conflitar com outro Postgres local).
+
+```bash
+npm run db:up    # sobe o banco
+npm run db:down  # derruba o banco (os dados ficam no volume)
+```
