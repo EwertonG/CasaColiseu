@@ -1,0 +1,15 @@
+{
+  "name": "casacoliseu",
+  "private": true,
+  "description": "Sistema de gestão da República Coliseu",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
