@@ -6,3 +6,22 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Perfil {
+  ADMIN
+  MORADOR
+}
+
+model User {
+  id        String   @id @default(cuid())
+  nome      String
+  usuario   String   @unique
+  email     String?  @unique
+  senhaHash String   @map("senha_hash")
+  perfil    Perfil   @default(MORADOR)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
