@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / SO
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Uploads locais (Documentos)
+apps/api/uploads/
+
+# Instruções e plano locais (não rastrear)
+CLAUDE.md
+CLAUDE.local.md
+PLANO.md
+.claude/
