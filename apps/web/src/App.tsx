@@ -14,9 +14,9 @@ export function App() {
   }, []);
 
   return (
-    <main>
-      <h1>{APP_NAME}</h1>
-      <p>API: {api}</p>
+    <main className="mx-auto max-w-3xl p-10">
+      <h1 className="text-5xl">{APP_NAME}</h1>
+      <p className="mt-2 text-texto-suave">API: {api}</p>
     </main>
   );
 }

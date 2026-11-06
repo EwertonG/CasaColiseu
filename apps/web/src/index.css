@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource-variable/instrument-sans';
+
+@theme {
+  /* Fontes */
+  --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  /* Base */
+  --color-creme: #f5f0e3;
+  --color-creme-escuro: #ece5d2;
+  --color-tinta: #1f1d17;
+  --color-tinta-suave: #2b2820;
+  --color-texto: #1f1d17;
+  --color-texto-suave: #6b6656;
+  --color-borda: #e6dfca;
+  --color-borda-forte: #cfc6aa;
+
+  /* Destaque */
+  --color-amarelo: #f5e10a;
+  --color-amarelo-escuro: #c4a800;
+  --color-amarelo-claro: #fdf6cf;
+
+  /* Status */
+  --color-perigo: #9b2c22;
+  --color-perigo-claro: #fbe4e0;
+  --color-sucesso: #2f6b3a;
+  --color-sucesso-claro: #e2f0e2;
+  --color-aviso: #8a6400;
+  --color-aviso-claro: #fdf3c4;
+  --color-neutro: #5c5848;
+  --color-neutro-claro: #eee9da;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    @apply bg-creme font-sans text-texto antialiased;
+  }
+
+  h1 {
+    @apply font-serif;
+  }
+}
