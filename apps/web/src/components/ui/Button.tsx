@@ -5,7 +5,7 @@ const variantes = {
   primario: 'bg-tinta text-creme hover:bg-tinta-suave',
   destaque: 'bg-amarelo text-tinta hover:brightness-95',
   secundario: 'border border-borda-forte bg-white text-texto hover:bg-creme',
-  link: 'h-auto px-0 underline decoration-borda-forte underline-offset-4 hover:decoration-texto',
+  link: 'text-[15px] underline decoration-borda-forte underline-offset-4 hover:decoration-texto',
 } as const;
 
 const tamanhos = {
@@ -34,7 +34,7 @@ export function Button({
         'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        tamanhos[tamanho],
+        variante !== 'link' && tamanhos[tamanho],
         variantes[variante],
         larguraTotal && 'w-full',
         className,
