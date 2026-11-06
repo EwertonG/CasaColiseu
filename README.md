@@ -28,3 +28,27 @@ Outros scripts:
 | `npm run build`  | Gera o build de todos os pacotes |
 | `npm run lint`   | Verifica o código com ESLint     |
 | `npm run format` | Formata o código com Prettier    |
+
+## Banco de dados
+
+O Postgres roda em Docker, na porta **5433** (para não conflitar com outro Postgres local).
+
+```bash
+npm run db:up      # sobe o banco
+npm run db:down    # derruba o banco (os dados ficam no volume)
+npm run db:migrate # aplica as migrations
+npm run db:seed    # cria o administrador inicial
+npm run db:studio  # abre o Prisma Studio para ver os dados
+```
+
+Primeira vez:
+
+```bash
+cp apps/api/.env.example apps/api/.env
+npm install
+npm run db:up
+npm run db:migrate
+npm run db:seed
+```
+
+Antes do `db:seed`, preencha `ADMIN_NOME`, `ADMIN_USUARIO`, `ADMIN_SENHA` (e opcionalmente `ADMIN_EMAIL`) no `apps/api/.env`. O seed cria só esse administrador; os demais moradores são cadastrados por ele pelo sistema.
