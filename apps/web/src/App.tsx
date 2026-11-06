@@ -1,9 +1,26 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { APP_NAME } from '@casacoliseu/shared';
+
+// Só existe em desenvolvimento: no build de produção esse import é removido.
+const Vitrine = import.meta.env.DEV
+  ? lazy(() => import('./pages/Vitrine').then((m) => ({ default: m.Vitrine })))
+  : null;
 
 type Health = { status: string };
 
 export function App() {
+  if (Vitrine && window.location.pathname === '/ui') {
+    return (
+      <Suspense>
+        <Vitrine />
+      </Suspense>
+    );
+  }
+
+  return <Inicio />;
+}
+
+function Inicio() {
   const [api, setApi] = useState<string>('verificando...');
 
   useEffect(() => {
