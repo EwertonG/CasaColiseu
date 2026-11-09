@@ -1,0 +1,10 @@
+/** Erro com status HTTP, tratado pelo middleware de erros. */
+export class HttpError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = 'HttpError';
+  }
+}
