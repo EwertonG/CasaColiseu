@@ -33,6 +33,7 @@
     "db:down": "docker compose down",
     "db:migrate": "npm run db:migrate -w @casacoliseu/api",
     "db:seed": "npm run db:seed -w @casacoliseu/api",
-    "db:studio": "npm run db:studio -w @casacoliseu/api"
+    "db:studio": "npm run db:studio -w @casacoliseu/api",
+    "test": "npm run test --workspaces --if-present"
   }
 }

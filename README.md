@@ -51,4 +51,13 @@ npm run db:migrate
 npm run db:seed
 ```
 
-Antes do `db:seed`, preencha `ADMIN_NOME`, `ADMIN_USUARIO`, `ADMIN_SENHA` (e opcionalmente `ADMIN_EMAIL`) no `apps/api/.env`. O seed cria só esse administrador; os demais moradores são cadastrados por ele pelo sistema.
+No `apps/api/.env`, gere um `JWT_SECRET` (o comando está no `.env.example`). Antes do `db:seed`, preencha `ADMIN_NOME`, `ADMIN_USUARIO`, `ADMIN_SENHA` (e opcionalmente `ADMIN_EMAIL`) no `apps/api/.env`. O seed cria só esse administrador; os demais moradores são cadastrados por ele pelo sistema.
+
+## Testes
+
+```bash
+npm run db:up
+npm test
+```
+
+Os testes da API usam um banco separado (`casacoliseu_test`), criado automaticamente na primeira execução. Cada teste apaga os dados que criou; o banco principal nunca é usado.
