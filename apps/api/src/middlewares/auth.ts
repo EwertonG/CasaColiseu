@@ -4,13 +4,16 @@ import { HttpError } from '../lib/http-error';
 import { COOKIE_SESSAO, lerToken, opcoesCookie } from '../lib/sessao';
 import type { User } from '../generated/prisma/client';
 
-/** Exige um usuário logado. Coloca o usuário em req.usuario. */
+/**
+ * Exige um usuário logado e ativo. Coloca o usuário em req.usuario.
+ * Quem for desativado perde o acesso na hora, mesmo com sessão aberta.
+ */
 export const requireAuth: RequestHandler = async (req, res, next) => {
   const token: unknown = req.cookies?.[COOKIE_SESSAO];
   const usuarioId = typeof token === 'string' ? lerToken(token) : null;
   const usuario = usuarioId ? await prisma.user.findUnique({ where: { id: usuarioId } }) : null;
 
-  if (!usuario) {
+  if (!usuario || !usuario.ativo) {
     if (token) res.clearCookie(COOKIE_SESSAO, opcoesCookie);
     throw new HttpError(401, 'Faça login para continuar.');
   }

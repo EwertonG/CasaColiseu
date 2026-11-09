@@ -31,5 +31,9 @@ export async function autenticar(login: string, senha: string): Promise<User> {
     throw new HttpError(401, 'Usuário ou senha incorretos.');
   }
 
+  if (!usuario.ativo) {
+    throw new HttpError(403, 'Seu acesso está desativado. Fale com o administrador da república.');
+  }
+
   return usuario;
 }
