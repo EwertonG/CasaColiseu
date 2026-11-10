@@ -14,6 +14,24 @@ packages/
   shared/   # Tipos e validações compartilhados
 ```
 
+## Módulos
+
+Cada módulo do sistema tem uma pasta na API e outra no site:
+
+| Módulo           | API                                                                  | Site                                                                 |
+| ---------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Login            | [`apps/api/src/modules/auth`](apps/api/src/modules/auth)             | [`apps/web/src/modules/auth`](apps/web/src/modules/auth)             |
+| Início           | —                                                                    | [`apps/web/src/modules/inicio`](apps/web/src/modules/inicio)         |
+| Moradores        | [`apps/api/src/modules/moradores`](apps/api/src/modules/moradores)   | [`apps/web/src/modules/moradores`](apps/web/src/modules/moradores)   |
+| Contas           | [`apps/api/src/modules/contas`](apps/api/src/modules/contas)         | [`apps/web/src/modules/contas`](apps/web/src/modules/contas)         |
+| Máquina de lavar | [`apps/api/src/modules/maquina`](apps/api/src/modules/maquina)       | [`apps/web/src/modules/maquina`](apps/web/src/modules/maquina)       |
+| Tarefas          | [`apps/api/src/modules/tarefas`](apps/api/src/modules/tarefas)       | [`apps/web/src/modules/tarefas`](apps/web/src/modules/tarefas)       |
+| Compras          | [`apps/api/src/modules/compras`](apps/api/src/modules/compras)       | [`apps/web/src/modules/compras`](apps/web/src/modules/compras)       |
+| Documentos       | [`apps/api/src/modules/documentos`](apps/api/src/modules/documentos) | [`apps/web/src/modules/documentos`](apps/web/src/modules/documentos) |
+| Página pública   | —                                                                    | [`apps/web/src/modules/publico`](apps/web/src/modules/publico)       |
+
+Código comum aos dois lados (validações e tipos) fica em [`packages/shared`](packages/shared).
+
 ## Como rodar
 
 Pré-requisitos: Node.js 20+ e npm 10+.
