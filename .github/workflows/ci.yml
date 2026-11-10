@@ -6,7 +6,6 @@ on:
   push:
     branches: [main]
 
-# Se chegar um commit novo no mesmo PR, cancela a execução anterior.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -32,7 +31,6 @@ jobs:
           --health-timeout 5s
           --health-retries 10
 
-    # Valores só para o CI (nenhum segredo real).
     env:
       DATABASE_URL: postgresql://coliseu:coliseu@localhost:5433/casacoliseu
       JWT_SECRET: segredo-do-ci-com-mais-de-trinta-e-dois-caracteres
