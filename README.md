@@ -1,5 +1,7 @@
 # CasaColiseu
 
+[![CI](https://github.com/EwertonG/CasaColiseu/actions/workflows/ci.yml/badge.svg)](https://github.com/EwertonG/CasaColiseu/actions/workflows/ci.yml)
+
 Sistema de gestão da **República Coliseu**: contas da casa com divisão automática, escala da máquina de lavar, tarefas, compras, documentos e moradores — além de uma página pública para quem quer conhecer a república.
 
 ## Estrutura
