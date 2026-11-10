@@ -32,46 +32,59 @@ Cada módulo do sistema tem uma pasta na API e outra no site:
 
 Código comum aos dois lados (validações e tipos) fica em [`packages/shared`](packages/shared).
 
-## Como rodar
+## Primeiros passos
 
-Pré-requisitos: Node.js 20+ e npm 10+.
+Pré-requisitos: [Git](https://git-scm.com/), [Node.js 24](https://nodejs.org/) (npm 10+) e [Docker Desktop](https://www.docker.com/products/docker-desktop/) aberto.
 
 ```bash
+# 1. Clonar
+git clone https://github.com/EwertonG/CasaColiseu.git
+cd CasaColiseu
+
+# 2. Criar o arquivo de configuração da API
+cp apps/api/.env.example apps/api/.env      # PowerShell: Copy-Item apps/api/.env.example apps/api/.env
+
+# 3. Instalar as dependências
 npm install
-npm run dev      # sobe web (http://localhost:5173) e api (http://localhost:3333)
+
+# 4. Subir o banco e criar as tabelas
+npm run db:up
+npm run db:migrate
+
+# 5. (Opcional) Criar o administrador inicial
+#    Preencha ADMIN_NOME, ADMIN_USUARIO e ADMIN_SENHA no apps/api/.env antes.
+npm run db:seed
+
+# 6. Rodar
+npm run dev
 ```
 
-Outros scripts:
+- Site: http://localhost:5173
+- API: http://localhost:3333/health (deve responder `"db": "ok"`)
 
-| Script           | O que faz                        |
-| ---------------- | -------------------------------- |
-| `npm run build`  | Gera o build de todos os pacotes |
-| `npm run lint`   | Verifica o código com ESLint     |
-| `npm run format` | Formata o código com Prettier    |
+O `.env.example` já funciona para desenvolvimento. Para um ambiente real, gere um `JWT_SECRET` próprio (o comando está no arquivo).
+
+Para contribuir (branches, commits e pull requests), leia o [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Scripts
+
+| Script               | O que faz                                                |
+| -------------------- | -------------------------------------------------------- |
+| `npm run dev`        | Sobe o site e a API juntos, recarregando ao salvar       |
+| `npm run build`      | Gera o build de produção de todos os pacotes             |
+| `npm test`           | Roda os testes automáticos                               |
+| `npm run lint`       | Verifica o código com ESLint                             |
+| `npm run typecheck`  | Verifica os tipos do TypeScript                          |
+| `npm run format`     | Formata o código com Prettier                            |
+| `npm run db:up`      | Sobe o Postgres no Docker                                |
+| `npm run db:down`    | Derruba o Postgres (os dados ficam guardados no volume)  |
+| `npm run db:migrate` | Aplica as migrations do banco                            |
+| `npm run db:seed`    | Cria o administrador inicial a partir do `apps/api/.env` |
+| `npm run db:studio`  | Abre o Prisma Studio para ver os dados                   |
 
 ## Banco de dados
 
-O Postgres roda em Docker, na porta **5433** (para não conflitar com outro Postgres local).
-
-```bash
-npm run db:up      # sobe o banco
-npm run db:down    # derruba o banco (os dados ficam no volume)
-npm run db:migrate # aplica as migrations
-npm run db:seed    # cria o administrador inicial
-npm run db:studio  # abre o Prisma Studio para ver os dados
-```
-
-Primeira vez:
-
-```bash
-cp apps/api/.env.example apps/api/.env
-npm install
-npm run db:up
-npm run db:migrate
-npm run db:seed
-```
-
-No `apps/api/.env`, gere um `JWT_SECRET` (o comando está no `.env.example`). Antes do `db:seed`, preencha `ADMIN_NOME`, `ADMIN_USUARIO`, `ADMIN_SENHA` (e opcionalmente `ADMIN_EMAIL`) no `apps/api/.env`. O seed cria só esse administrador; os demais moradores são cadastrados por ele pelo sistema.
+O Postgres roda em Docker, na porta **5433** (para não conflitar com outro Postgres local). O seed cria só o administrador; os demais moradores são cadastrados por ele pelo sistema.
 
 ## Testes
 
@@ -81,3 +94,7 @@ npm test
 ```
 
 Os testes da API usam um banco separado (`casacoliseu_test`), criado automaticamente na primeira execução. Cada teste apaga os dados que criou; o banco principal nunca é usado.
+
+## Integração contínua
+
+A cada pull request e a cada merge na `main`, o [GitHub Actions](.github/workflows/ci.yml) roda lint, formatação, tipos, build e testes (com um Postgres temporário). Um PR só pode entrar na `main` com o CI verde e a aprovação de outro integrante.
