@@ -8,7 +8,6 @@ const variantes = {
 } as const;
 
 type IconButtonProps = ComponentProps<'button'> & {
-  /** Texto lido por leitores de tela (o botão só mostra o ícone). */
   rotulo: string;
   variante?: keyof typeof variantes;
 };

@@ -1,5 +1,5 @@
 # Login (site)
 
-Tela de login, sessão do usuário no site e proteção das páginas internas.
+Tela de login, sessão do usuário no site (`useSessao`, `useEntrar`, `useSair`) e proteção das páginas internas (`RequireAuth`, `RequireAdmin`).
 
-Previsto para o **Dia 5** do plano.
+Implementado no **Dia 5**.

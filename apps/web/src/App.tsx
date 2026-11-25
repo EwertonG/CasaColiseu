@@ -4,6 +4,7 @@ import { LoginPage } from './modules/auth/LoginPage';
 import { RequireAdmin, RequireAuth } from './modules/auth/RotasProtegidas';
 import { InicioPage } from './modules/inicio/InicioPage';
 import { EmBreve } from './pages/EmBreve';
+import { AppLayout } from './components/layout/AppLayout';
 
 const Vitrine = import.meta.env.DEV
   ? lazy(() => import('./pages/Vitrine').then((m) => ({ default: m.Vitrine })))
@@ -14,15 +15,20 @@ const rotas: RouteObject[] = [
   {
     element: <RequireAuth />,
     children: [
-      { path: '/inicio', element: <InicioPage /> },
-      { path: '/contas', element: <EmBreve titulo="Contas da casa" /> },
-      { path: '/maquina', element: <EmBreve titulo="Máquina de lavar" /> },
-      { path: '/tarefas', element: <EmBreve titulo="Tarefas" /> },
-      { path: '/compras', element: <EmBreve titulo="Compras da casa" /> },
-      { path: '/documentos', element: <EmBreve titulo="Documentos" /> },
       {
-        element: <RequireAdmin />,
-        children: [{ path: '/moradores', element: <EmBreve titulo="Moradores" /> }],
+        element: <AppLayout />,
+        children: [
+          { path: '/inicio', element: <InicioPage /> },
+          { path: '/contas', element: <EmBreve titulo="Contas da casa" /> },
+          { path: '/maquina', element: <EmBreve titulo="Máquina de lavar" /> },
+          { path: '/tarefas', element: <EmBreve titulo="Tarefas" /> },
+          { path: '/compras', element: <EmBreve titulo="Compras da casa" /> },
+          { path: '/documentos', element: <EmBreve titulo="Documentos" /> },
+          {
+            element: <RequireAdmin />,
+            children: [{ path: '/moradores', element: <EmBreve titulo="Moradores" /> }],
+          },
+        ],
       },
     ],
   },
