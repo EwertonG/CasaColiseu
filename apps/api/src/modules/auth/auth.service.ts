@@ -4,8 +4,6 @@ import { prisma } from '../../lib/prisma';
 import { HttpError } from '../../lib/http-error';
 import type { User } from '../../generated/prisma/client';
 
-// Hash usado quando o login não existe, para a resposta demorar o mesmo tempo
-// e não revelar quais usuários existem.
 const HASH_FALSO = bcrypt.hashSync('senha-que-nao-existe', 10);
 
 export function paraSessao(usuario: User): UsuarioSessao {

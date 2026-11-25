@@ -2,7 +2,6 @@ import { execSync } from 'node:child_process';
 import pg from 'pg';
 import { DATABASE_URL_TESTE } from '../vitest.config';
 
-/** Cria o banco de teste (se não existir) e aplica as migrations nele. */
 export default async function setup() {
   const nomeBanco = new URL(DATABASE_URL_TESTE).pathname.slice(1);
 
