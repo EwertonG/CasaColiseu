@@ -7,7 +7,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     globalSetup: ['./test/global-setup.ts'],
-    // Os testes usam o mesmo banco de teste: rodar um arquivo por vez.
     fileParallelism: false,
     env: {
       NODE_ENV: 'test',

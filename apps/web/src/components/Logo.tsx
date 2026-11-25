@@ -23,7 +23,6 @@ type MarcaProps = {
   className?: string;
 };
 
-/** Logo + nome "CasaColiseu", como no topo da barra lateral. */
 export function Marca({ subtitulo = 'República Coliseu', className }: MarcaProps) {
   return (
     <div className={cn('flex items-center gap-3', className)}>

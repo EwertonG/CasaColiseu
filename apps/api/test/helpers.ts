@@ -9,7 +9,6 @@ const criados: string[] = [];
 
 type Opcoes = { perfil?: Perfil; ativo?: boolean; email?: string };
 
-/** Cria um usuário temporário. Apague com limparUsuarios() no afterEach. */
 export async function criarUsuario({ perfil = 'MORADOR', ativo = true, email }: Opcoes = {}) {
   const sufixo = Math.random().toString(36).slice(2, 10);
   const usuario = await prisma.user.create({

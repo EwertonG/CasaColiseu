@@ -5,6 +5,5 @@ export default defineConfig({
   format: 'esm',
   target: 'node20',
   clean: true,
-  // O pacote shared é TypeScript puro: precisa entrar no bundle.
   noExternal: ['@casacoliseu/shared'],
 });

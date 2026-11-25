@@ -26,7 +26,6 @@ const menu = [
   { rotulo: 'Moradores', Icone: iconesMenu.moradores },
 ];
 
-/** Página só de desenvolvimento (/ui) para conferir os componentes com os protótipos. */
 export function Vitrine() {
   const {
     concluir: Concluir,

@@ -1,39 +1,53 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { APP_NAME } from '@casacoliseu/shared';
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter, Navigate, RouterProvider, type RouteObject } from 'react-router';
+import { LoginPage } from './modules/auth/LoginPage';
+import { RequireAdmin, RequireAuth } from './modules/auth/RotasProtegidas';
+import { InicioPage } from './modules/inicio/InicioPage';
+import { EmBreve } from './pages/EmBreve';
+import { AppLayout } from './components/layout/AppLayout';
 
-// Só existe em desenvolvimento: no build de produção esse import é removido.
 const Vitrine = import.meta.env.DEV
   ? lazy(() => import('./pages/Vitrine').then((m) => ({ default: m.Vitrine })))
   : null;
 
-type Health = { status: string };
+const rotas: RouteObject[] = [
+  { path: '/login', element: <LoginPage /> },
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: '/inicio', element: <InicioPage /> },
+          { path: '/contas', element: <EmBreve titulo="Contas da casa" /> },
+          { path: '/maquina', element: <EmBreve titulo="Máquina de lavar" /> },
+          { path: '/tarefas', element: <EmBreve titulo="Tarefas" /> },
+          { path: '/compras', element: <EmBreve titulo="Compras da casa" /> },
+          { path: '/documentos', element: <EmBreve titulo="Documentos" /> },
+          {
+            element: <RequireAdmin />,
+            children: [{ path: '/moradores', element: <EmBreve titulo="Moradores" /> }],
+          },
+        ],
+      },
+    ],
+  },
+  { path: '*', element: <Navigate to="/inicio" replace /> },
+];
 
-export function App() {
-  if (Vitrine && window.location.pathname === '/ui') {
-    return (
+if (Vitrine) {
+  rotas.unshift({
+    path: '/ui',
+    element: (
       <Suspense>
         <Vitrine />
       </Suspense>
-    );
-  }
-
-  return <Inicio />;
+    ),
+  });
 }
 
-function Inicio() {
-  const [api, setApi] = useState<string>('verificando...');
+const router = createBrowserRouter(rotas);
 
-  useEffect(() => {
-    fetch('/api/health')
-      .then((res) => res.json() as Promise<Health>)
-      .then((data) => setApi(data.status))
-      .catch(() => setApi('fora do ar'));
-  }, []);
-
-  return (
-    <main className="mx-auto max-w-3xl p-10">
-      <h1 className="text-5xl">{APP_NAME}</h1>
-      <p className="mt-2 text-texto-suave">API: {api}</p>
-    </main>
-  );
+export function App() {
+  return <RouterProvider router={router} />;
 }

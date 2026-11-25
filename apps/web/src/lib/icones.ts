@@ -18,7 +18,6 @@ import {
   X,
 } from 'lucide-react';
 
-/** Ícones das seções do menu, na ordem dos protótipos. */
 export const iconesMenu = {
   inicio: House,
   contas: Wallet,
@@ -29,7 +28,6 @@ export const iconesMenu = {
   moradores: Users,
 } as const;
 
-/** Ícones de ação usados em botões e listas. */
 export const iconesAcao = {
   concluir: Check,
   abrir: ChevronRight,
