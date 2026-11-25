@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import type { Morador } from '@casacoliseu/shared';
-import { Avatar, Badge, Button, Card, CardHeader, IconButton } from '../../components/ui';
+import { Avatar, Badge, Button, Card, CardHeader, IconButton, Modal } from '../../components/ui';
 import { iconesAcao } from '../../lib/icones';
 import { useSessao } from '../auth/useSessao';
 import { useMoradores } from './api';
+import { FormMorador } from './FormMorador';
+
+type ModalAberto = { tipo: 'novo' } | { tipo: 'editar'; morador: Morador } | null;
 
 const rotuloPerfil = { ADMIN: 'Administrador', MORADOR: 'Morador' } as const;
 
@@ -18,6 +22,8 @@ function listarNomes(nomes: string[]) {
 export function MoradoresPage() {
   const { usuario } = useSessao();
   const { data: moradores, isPending, error, refetch } = useMoradores();
+  const [modal, setModal] = useState<ModalAberto>(null);
+  const fecharModal = () => setModal(null);
 
   const ativos = moradores?.filter((m) => m.ativo) ?? [];
   const inativos = moradores?.filter((m) => !m.ativo) ?? [];
@@ -34,7 +40,7 @@ export function MoradoresPage() {
             só o administrador vê esta tela.
           </p>
         </div>
-        <Button>Adicionar morador</Button>
+        <Button onClick={() => setModal({ tipo: 'novo' })}>Adicionar morador</Button>
       </header>
 
       <div className="grid items-start gap-4 lg:grid-cols-[2fr_1fr]">
@@ -72,6 +78,7 @@ export function MoradoresPage() {
                       key={morador.id}
                       morador={morador}
                       ehVoce={morador.id === usuario?.id}
+                      aoEditar={() => setModal({ tipo: 'editar', morador })}
                     />
                   ))}
                 </tbody>
@@ -102,11 +109,37 @@ export function MoradoresPage() {
           )}
         </Card>
       </div>
+
+      <Modal
+        aberto={modal !== null}
+        aoFechar={fecharModal}
+        titulo={modal?.tipo === 'editar' ? `Editar ${modal.morador.nome}` : 'Adicionar morador'}
+        descricao={
+          modal?.tipo === 'novo'
+            ? 'Passe o usuário e a senha inicial para a pessoa entrar no sistema.'
+            : undefined
+        }
+      >
+        {modal && (
+          <FormMorador
+            key={modal.tipo === 'editar' ? modal.morador.id : 'novo'}
+            morador={modal.tipo === 'editar' ? modal.morador : undefined}
+            ehVoce={modal.tipo === 'editar' && modal.morador.id === usuario?.id}
+            aoConcluir={fecharModal}
+          />
+        )}
+      </Modal>
     </div>
   );
 }
 
-function LinhaMorador({ morador, ehVoce }: { morador: Morador; ehVoce: boolean }) {
+type LinhaMoradorProps = {
+  morador: Morador;
+  ehVoce: boolean;
+  aoEditar: () => void;
+};
+
+function LinhaMorador({ morador, ehVoce, aoEditar }: LinhaMoradorProps) {
   const { editar: Editar, desativar: Desativar, ativar: Ativar } = iconesAcao;
 
   return (
@@ -124,7 +157,7 @@ function LinhaMorador({ morador, ehVoce }: { morador: Morador; ehVoce: boolean }
       <td className="py-3 text-texto-suave">{morador.ativo ? 'Ativo' : <Badge>Inativo</Badge>}</td>
       <td className="py-3">
         <span className="flex justify-end gap-2">
-          <IconButton rotulo={`Editar ${morador.nome}`}>
+          <IconButton rotulo={`Editar ${morador.nome}`} onClick={aoEditar}>
             <Editar />
           </IconButton>
           {!ehVoce &&
