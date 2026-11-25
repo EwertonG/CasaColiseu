@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { criarMoradorSchema } from '@casacoliseu/shared';
-import { requireAdmin, requireAuth } from '../../middlewares/auth';
-import { criarMorador, listarMoradores } from './moradores.service';
+import { criarMoradorSchema, editarMoradorSchema } from '@casacoliseu/shared';
+import { requireAdmin, requireAuth, usuarioLogado } from '../../middlewares/auth';
+import { criarMorador, editarMorador, listarMoradores } from './moradores.service';
 
 export const moradoresRoutes = Router();
 
@@ -14,4 +14,10 @@ moradoresRoutes.get('/', async (_req, res) => {
 moradoresRoutes.post('/', async (req, res) => {
   const dados = criarMoradorSchema.parse(req.body);
   res.status(201).json({ morador: await criarMorador(dados) });
+});
+
+moradoresRoutes.patch('/:id', async (req, res) => {
+  const dados = editarMoradorSchema.parse(req.body);
+  const morador = await editarMorador(req.params.id, dados, usuarioLogado(req));
+  res.json({ morador });
 });
