@@ -1,5 +1,5 @@
 # Moradores (site)
 
-Tela de moradores (só administrador): lista, cadastro, edição e ativação/desativação.
+Tela de moradores (só administrador): lista, cadastro, edição e ativação/desativação com confirmação.
 
-Previsto para o **Dia 7** do plano.
+Implementado no **Dia 7**.

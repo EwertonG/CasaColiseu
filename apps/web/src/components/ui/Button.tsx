@@ -4,6 +4,7 @@ import { cn } from '../../lib/cn';
 const variantes = {
   primario: 'bg-tinta text-creme hover:bg-tinta-suave',
   destaque: 'bg-amarelo text-tinta hover:brightness-95',
+  perigo: 'bg-perigo text-white hover:brightness-110',
   secundario: 'border border-borda-forte bg-white text-texto hover:bg-creme',
   link: 'text-[15px] underline decoration-borda-forte underline-offset-4 hover:decoration-texto',
 } as const;

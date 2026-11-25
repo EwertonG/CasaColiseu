@@ -1,5 +1,10 @@
 # Moradores (API)
 
-Cadastro, edição, ativação e desativação de moradores (só administrador). Moradores ativos entram na divisão das contas e na escala.
+Rotas só do administrador (`requireAuth` + `requireAdmin`):
 
-Previsto para o **Dia 6** do plano.
+- `GET /moradores`: lista (ativos primeiro)
+- `POST /moradores`: cadastra com senha inicial
+- `PATCH /moradores/:id`: edita nome, usuário, e-mail e perfil
+- `PATCH /moradores/:id/status`: ativa ou desativa
+
+Implementado no **Dia 6**.

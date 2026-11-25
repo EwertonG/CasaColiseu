@@ -4,9 +4,14 @@ import { Avatar, Badge, Button, Card, CardHeader, IconButton, Modal } from '../.
 import { iconesAcao } from '../../lib/icones';
 import { useSessao } from '../auth/useSessao';
 import { useMoradores } from './api';
+import { ConfirmarStatus } from './ConfirmarStatus';
 import { FormMorador } from './FormMorador';
 
-type ModalAberto = { tipo: 'novo' } | { tipo: 'editar'; morador: Morador } | null;
+type ModalAberto =
+  | { tipo: 'novo' }
+  | { tipo: 'editar'; morador: Morador }
+  | { tipo: 'status'; morador: Morador }
+  | null;
 
 const rotuloPerfil = { ADMIN: 'Administrador', MORADOR: 'Morador' } as const;
 
@@ -79,6 +84,7 @@ export function MoradoresPage() {
                       morador={morador}
                       ehVoce={morador.id === usuario?.id}
                       aoEditar={() => setModal({ tipo: 'editar', morador })}
+                      aoAlterarStatus={() => setModal({ tipo: 'status', morador })}
                     />
                   ))}
                 </tbody>
@@ -113,33 +119,50 @@ export function MoradoresPage() {
       <Modal
         aberto={modal !== null}
         aoFechar={fecharModal}
-        titulo={modal?.tipo === 'editar' ? `Editar ${modal.morador.nome}` : 'Adicionar morador'}
+        titulo={tituloModal(modal)}
         descricao={
           modal?.tipo === 'novo'
             ? 'Passe o usuário e a senha inicial para a pessoa entrar no sistema.'
             : undefined
         }
       >
-        {modal && (
-          <FormMorador
-            key={modal.tipo === 'editar' ? modal.morador.id : 'novo'}
-            morador={modal.tipo === 'editar' ? modal.morador : undefined}
-            ehVoce={modal.tipo === 'editar' && modal.morador.id === usuario?.id}
+        {modal?.tipo === 'status' ? (
+          <ConfirmarStatus
+            key={modal.morador.id}
+            morador={modal.morador}
             aoConcluir={fecharModal}
           />
+        ) : (
+          modal && (
+            <FormMorador
+              key={modal.tipo === 'editar' ? modal.morador.id : 'novo'}
+              morador={modal.tipo === 'editar' ? modal.morador : undefined}
+              ehVoce={modal.tipo === 'editar' && modal.morador.id === usuario?.id}
+              aoConcluir={fecharModal}
+            />
+          )
         )}
       </Modal>
     </div>
   );
 }
 
+function tituloModal(modal: ModalAberto) {
+  if (modal?.tipo === 'editar') return `Editar ${modal.morador.nome}`;
+  if (modal?.tipo === 'status') {
+    return `${modal.morador.ativo ? 'Desativar' : 'Reativar'} ${modal.morador.nome}?`;
+  }
+  return 'Adicionar morador';
+}
+
 type LinhaMoradorProps = {
   morador: Morador;
   ehVoce: boolean;
   aoEditar: () => void;
+  aoAlterarStatus: () => void;
 };
 
-function LinhaMorador({ morador, ehVoce, aoEditar }: LinhaMoradorProps) {
+function LinhaMorador({ morador, ehVoce, aoEditar, aoAlterarStatus }: LinhaMoradorProps) {
   const { editar: Editar, desativar: Desativar, ativar: Ativar } = iconesAcao;
 
   return (
@@ -162,11 +185,15 @@ function LinhaMorador({ morador, ehVoce, aoEditar }: LinhaMoradorProps) {
           </IconButton>
           {!ehVoce &&
             (morador.ativo ? (
-              <IconButton rotulo={`Desativar ${morador.nome}`} variante="perigo">
+              <IconButton
+                rotulo={`Desativar ${morador.nome}`}
+                variante="perigo"
+                onClick={aoAlterarStatus}
+              >
                 <Desativar />
               </IconButton>
             ) : (
-              <IconButton rotulo={`Reativar ${morador.nome}`}>
+              <IconButton rotulo={`Reativar ${morador.nome}`} onClick={aoAlterarStatus}>
                 <Ativar />
               </IconButton>
             ))}
