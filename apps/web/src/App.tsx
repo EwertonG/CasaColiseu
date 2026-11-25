@@ -1,39 +1,31 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { APP_NAME } from '@casacoliseu/shared';
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter, Navigate, RouterProvider, type RouteObject } from 'react-router';
+import { LoginPage } from './modules/auth/LoginPage';
+import { InicioPage } from './modules/inicio/InicioPage';
 
-// Só existe em desenvolvimento: no build de produção esse import é removido.
 const Vitrine = import.meta.env.DEV
   ? lazy(() => import('./pages/Vitrine').then((m) => ({ default: m.Vitrine })))
   : null;
 
-type Health = { status: string };
+const rotas: RouteObject[] = [
+  { path: '/login', element: <LoginPage /> },
+  { path: '/inicio', element: <InicioPage /> },
+  { path: '*', element: <Navigate to="/login" replace /> },
+];
 
-export function App() {
-  if (Vitrine && window.location.pathname === '/ui') {
-    return (
+if (Vitrine) {
+  rotas.unshift({
+    path: '/ui',
+    element: (
       <Suspense>
         <Vitrine />
       </Suspense>
-    );
-  }
-
-  return <Inicio />;
+    ),
+  });
 }
 
-function Inicio() {
-  const [api, setApi] = useState<string>('verificando...');
+const router = createBrowserRouter(rotas);
 
-  useEffect(() => {
-    fetch('/api/health')
-      .then((res) => res.json() as Promise<Health>)
-      .then((data) => setApi(data.status))
-      .catch(() => setApi('fora do ar'));
-  }, []);
-
-  return (
-    <main className="mx-auto max-w-3xl p-10">
-      <h1 className="text-5xl">{APP_NAME}</h1>
-      <p className="mt-2 text-texto-suave">API: {api}</p>
-    </main>
-  );
+export function App() {
+  return <RouterProvider router={router} />;
 }
