@@ -70,3 +70,16 @@ export async function editarMorador(
   const usuario = await prisma.user.update({ where: { id }, data: dados });
   return paraMorador(usuario);
 }
+
+export async function alterarStatus(
+  id: string,
+  ativo: boolean,
+  quemAltera: User,
+): Promise<Morador> {
+  await buscarMorador(id);
+  if (id === quemAltera.id && !ativo) {
+    throw new HttpError(400, 'Você não pode desativar a si mesmo.');
+  }
+  const usuario = await prisma.user.update({ where: { id }, data: { ativo } });
+  return paraMorador(usuario);
+}
