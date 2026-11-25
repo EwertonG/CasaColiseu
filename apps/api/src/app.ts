@@ -5,6 +5,7 @@ import { APP_NAME } from '@casacoliseu/shared';
 import { env } from './env';
 import { prisma } from './lib/prisma';
 import { authRoutes } from './modules/auth/auth.routes';
+import { moradoresRoutes } from './modules/moradores/moradores.routes';
 import { rotaNaoEncontrada, tratarErros } from './middlewares/erros';
 
 export function createApp() {
@@ -25,6 +26,7 @@ export function createApp() {
   });
 
   app.use('/auth', authRoutes);
+  app.use('/moradores', moradoresRoutes);
 
   app.use(rotaNaoEncontrada);
   app.use(tratarErros);

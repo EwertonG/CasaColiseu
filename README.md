@@ -64,8 +64,6 @@ npm run dev
 
 O `.env.example` já funciona para desenvolvimento. Para um ambiente real, gere um `JWT_SECRET` próprio (o comando está no arquivo).
 
-Para contribuir (branches, commits e pull requests), leia o [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ## Scripts
 
 | Script               | O que faz                                                |
