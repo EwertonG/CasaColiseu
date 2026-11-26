@@ -25,6 +25,14 @@ export async function criarUsuario({ perfil = 'MORADOR', ativo = true, email }: 
   return usuario;
 }
 
+export function rastrearUsuario(id: string) {
+  criados.push(id);
+}
+
+export function sufixoAleatorio() {
+  return Math.random().toString(36).slice(2, 10);
+}
+
 export async function limparUsuarios() {
   if (criados.length === 0) return;
   await prisma.user.deleteMany({ where: { id: { in: criados.splice(0) } } });

@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider, type RouteObject } from 
 import { LoginPage } from './modules/auth/LoginPage';
 import { RequireAdmin, RequireAuth } from './modules/auth/RotasProtegidas';
 import { InicioPage } from './modules/inicio/InicioPage';
+import { MoradoresPage } from './modules/moradores/MoradoresPage';
 import { EmBreve } from './pages/EmBreve';
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -26,7 +27,7 @@ const rotas: RouteObject[] = [
           { path: '/documentos', element: <EmBreve titulo="Documentos" /> },
           {
             element: <RequireAdmin />,
-            children: [{ path: '/moradores', element: <EmBreve titulo="Moradores" /> }],
+            children: [{ path: '/moradores', element: <MoradoresPage /> }],
           },
         ],
       },

@@ -19,8 +19,7 @@ apps/api/src/generated/
 npm-debug.log*
 
 # Editor / SO
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea/
 .DS_Store
 Thumbs.db
